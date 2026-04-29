@@ -4,6 +4,69 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Portfolio</title>
+   
+</head>
+<body>
+
+    <nav>
+        <h1>Tauhid Ansari</h1>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <header id="about">
+        <img src="https://i.ibb.co/NKFHQnp/IMG-20240426-002033-322.jpg" alt="Tauhid Ansari" class="profile-img">
+        <h3>Tauhid Ansari</h3>
+        <h2>Hello, I'm an Engineering Professional</h2>
+        <p>I specialize in complex systems, component-level troubleshooting, and technical project management.</p>
+        
+    </header>
+
+    <div class="container" id="skills">
+        <h2>My Skills</h2>
+        <ul class="skill-list">
+            <li>PCB Designing (KiCad)</li>
+            <li>Component-Level Diagnostics</li>
+            <li>Hardware Reverse Engineering</li>
+            <li>Android OS Customization</li>
+        </ul>
+    </div>
+
+    <div class="container" id="projects">
+        <h2>Featured Work</h2>
+        <div class="grid">
+
+            <div class="card">
+        <div class="card-viewer">
+            <img src="pcb-render.png" class="project-hero-img" id="projectHero1" alt="PCB 3D Render">
+            
+            <div class="card-thumbnails">
+                <img src="pcb-render.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero1', this)">
+                
+                <img src="pcb-schematic.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero1', this)">
+            </div>
+        </div>
+
+        <h3>Audio Interface PCB</h3>
+        <p>Custom printed circuit board designed for a BT Module and specialized IC (FM9688) routing, integrating audio jacks and a micro USB interface.</p>
+        <a href="#" class="project-link">View Documentation</a>
+    </div>
+            
+           
+
+    
+    </div>
+    </div>
+
+    <footer id="contact">
+        <h2>Get In Touch</h2>
+        <p>Ready to collaborate on the next big project.</p>
+        <p>Email: contact@example.com</p>
+    </footer>
+
     <style>
         /* Base Styles & Dark Theme */
         body {
@@ -18,17 +81,22 @@
         nav {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background-color: #1e1e1e;
-            padding: 1rem 2rem;
+            align-items: flex-start;
+            /* 0.9 means 90% solid, letting a tiny bit of background peek through */
+            background-color: rgba(30, 30, 30, 0.8); 
+            backdrop-filter: blur(8px); /* The frosted glass blur */
+            padding: 0.5rem 2rem; /* Shrunk top/bottom padding from 1rem to 0.5rem */
             position: sticky;
             top: 0;
+            z-index: 100; /* Ensures the nav stays on top of your project cards */
+            border-bottom: 1px solid rgba(255,255,255,0.1); /* Very faint bottom line */
         }
 
         nav h1 {
             margin: 0;
             color: #00d2ff; /* Cyan accent */
-            font-size: 1.5rem;
+            font-size: 1.4rem;
+            
         }
 
         nav ul {
@@ -37,12 +105,16 @@
             gap: 1.5rem;
             margin: 0;
             padding: 0;
+            margin-top: auto;
+            margin-bottom: auto;
+            
         }
 
         nav a {
             color: #ffffff;
             text-decoration: none;
             font-weight: bold;
+            font-size: 1rem;
         }
 
         nav a:hover {
@@ -61,7 +133,7 @@
         }
 
         header h2 {
-            font-size: 2.5rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
         }
 
@@ -69,6 +141,7 @@
             font-size: 1.2rem;
             max-width: 600px;
             color: #b0b0b0;
+            
         }
 
         /* Projects Section - CSS Grid for Automatic Responsiveness */
@@ -103,6 +176,101 @@
             margin-top: 0;
         }
 
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* This makes the image a perfect circle */
+            object-fit: cover; /* This stops rectangular images from stretching/squishing */
+            border: 3px solid #00d2ff; /* Matches your theme color */
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 210, 255, 0.2); /* Soft glow effect */
+        }
+
+        /* Skills Section Styling */
+        .skill-list {
+            list-style: none; /* Removes the standard bullet points */
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap; /* Automatically drops to the next line on small screens */
+            gap: 1rem; /* Space between each badge */
+            justify-content: flex-start; /* Centers the whole cluster */
+            margin-top: 1.5rem;
+        }
+
+        .skill-list li {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            padding: 0.5rem 1.2rem;
+            border-radius: 25px; /* Creates the rounded "pill" shape */
+            border: 1px solid #00d2ff; /* Matches your cyan theme */
+            font-size: 0.95rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease; /* Prepares it for a hover effect */
+        }
+
+        /* Optional: Makes the badge pop up slightly when hovered */
+        .skill-list li:hover {
+            transform: translateY(-3px);
+            background-color: #00d2ff;
+            color: #121212;
+            font-weight: bold;
+        }
+
+        /* THE NEW IMAGE VIEWER CSS */
+        
+        .card-viewer {
+            position: relative;
+            margin-bottom: 1rem;
+            width: 100%;
+            height: 250px; /* Standard height for project images */
+            overflow: hidden;
+            border-radius: 4px;
+            border-bottom: 2px solid #00d2ff; /* Theme accent line */
+        }
+
+        .project-hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Prevents the schematic from stretching awkwardly */
+            background-color: rgba(30, 30, 30, 0.5); /* Slight dark backdrop for clarity */
+            transition: opacity 0.2s ease;
+        }
+
+        /* Thumbnails Container - Floating on the main image */
+        .card-thumbnails {
+            display: flex;
+            gap: 0.5rem;
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0.5rem;
+            padding: 0.3rem;
+            background-color: rgba(30, 30, 30, 0.8); /* Dark frosted background */
+            backdrop-filter: blur(5px);
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Individual Thumbnails */
+        .thumb {
+            width: 45px;
+            height: 45px;
+            object-fit: cover; /* Centers the image content */
+            border-radius: 4px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        .thumb:hover {
+            transform: scale(1.05); /* Slight scale up on hover */
+        }
+
+        /* The thumbnail currently showing in the hero slot */
+        .thumb.active {
+            border-color: #00d2ff; /* Lights up with the theme color */
+        }
+        
+
         /* Footer */
         footer {
             text-align: center;
@@ -119,50 +287,27 @@
             }
         }
     </style>
-</head>
-<body>
 
-    <nav>
-        <h1>Portfolio</h1>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
-
-    <header id="about">
-        <h2>Hello, I'm an Engineering Professional</h2>
-        <p>I specialize in complex systems, component-level troubleshooting, and technical project management.</p>
-    </header>
-
-    <div class="container" id="projects">
-        <h2>Featured Work</h2>
-        <div class="grid">
+    <script>
+        function changeHero(heroId, clickedElement) {
+            // 1. Get the large hero image element by its unique ID
+            const heroImage = document.getElementById(heroId);
             
-            <div class="card">
-                <h3>Hardware & PCB Diagnostics</h3>
-                <p>Reverse engineering and detailed component-level troubleshooting for electronic systems.</p>
-            </div>
+            // 2. Change the source of the hero image to match the clicked thumbnail
+            heroImage.src = clickedElement.src;
 
-            <div class="card">
-                <h3>Solar & Energy Infrastructure</h3>
-                <p>Applying rigorous technical expertise and service engineering to sustainable energy solutions.</p>
-            </div>
+            // 3. Remove the 'active' class from all thumbnails in this container
+            const allThumbs = clickedElement.parentElement.getElementsByClassName('thumb');
+            for (let i = 0; i < allThumbs.length; i++) {
+                allThumbs[i].classList.remove('active');
+            }
 
-            <div class="card">
-                <h3>High-Resolution Photography</h3>
-                <p>A cinematic, technically precise approach to digital aesthetics and visual media.</p>
-            </div>
-
-        </div>
-    </div>
-
-    <footer id="contact">
-        <h2>Get In Touch</h2>
-        <p>Ready to collaborate on the next big project.</p>
-        <p>Email: contact@example.com</p>
-    </footer>
+            // 4. Add the 'active' class to the thumbnail that was just clicked
+            clickedElement.classList.add('active');
+        }
+    </script>
+</body>
+</html>
 
 </body>
 </html>
