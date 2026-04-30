@@ -12,7 +12,9 @@
         <h1>Tauhid Ansari</h1>
         <ul>
             <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">PCB Work</a></li>
+            <li><a href="#mechanical">3D Design</a></li> <!-- The new link -->
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
@@ -36,7 +38,7 @@
     </div>
 
     <div class="container" id="projects">
-        <h2>Featured Work</h2>
+        <h2>Featured Work (PCB Design) </h2>
         <div class="grid">
 
             <div class="card">
@@ -51,7 +53,7 @@
         </div>
 
         <h3>Audio Interface PCB</h3>
-        <p>Custom printed circuit board designed for a BT Module and specialized IC (FM9688) routing, integrating audio jacks and a micro USB interface.</p>
+        <p>Custom printed circuit board designed for devices that doesn't have Audio Jack, It uses Low Letency BT module with addition of chaging module for LiPo Battery.</p>
         <a href="#" class="project-link">View Documentation</a>
     </div>
             
@@ -60,6 +62,28 @@
     
     </div>
     </div>
+
+       <!-- New Section: Mechanical & 3D Design -->
+    <div class="container" id="mechanical">
+        <h2>3D Modeling</h2>
+        <div class="grid">
+            
+            <div class="card">
+                
+                <!-- Your new Fusion 360 image -->
+                <img src="fusion-render.png" alt="Fusion 360 3D Model" class="project-img">
+                
+                <h3>Custom Powerbank Enclosures</h3>
+                <p>Engineered precise mechanical components and enclosures using Autodesk Fusion 360. Designed with exact tolerances for 3D printing and seamless integration with custom PCB layouts.</p>
+                <a href="https://a360.co/4n2hbAc" class="project-link" target="_blank">View Design Files</a>
+            </div>
+
+            
+
+
+        </div>
+    </div>
+
 
     <footer id="contact">
         <h2>Get In Touch</h2>
@@ -228,6 +252,39 @@
             border-bottom: 2px solid #00d2ff; /* Theme accent line */
         }
 
+        
+       /* Updated style for single project images */
+        .project-img {
+            width: 100%; 
+            height: auto; /* Lets the image naturally dictate its own height */
+            max-height: 400px; /* Prevents it from getting too massive on large desktop screens */
+            object-fit: contain; /* Ensures 100% of the image is visible without any cropping */
+            background-color: rgba(30, 30, 30, 0.5); /* Subtle dark backdrop just in case there's extra space */
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #00d2ff;
+        }
+
+/* Styling for the project link button */
+        .project-link {
+            color: #00d2ff; /* This kills the default blue and makes it your cyan theme */
+            text-decoration: none; /* This kills the default underline */
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border: 1px solid #00d2ff; /* Gives it a nice button outline */
+            padding: 0.4rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        /* Makes the button light up when you hover over it */
+        .project-link:hover {
+            background-color: #00d2ff;
+            color: #121212;
+        }
+
         .project-hero-img {
             width: 100%;
             height: 100%;
@@ -279,11 +336,27 @@
             margin-top: 2rem;
         }
 
-        /* Simple Media Query for very small phones (adjusting nav) */
+        
+       /* Mobile Layout Adjustments */
         @media (max-width: 500px) {
             nav {
                 flex-direction: column;
-                gap: 1rem;
+                gap: 0.8rem;
+                align-items: flex-start;
+            }
+            
+            nav ul {
+                width: 100%;
+                overflow-x: auto; /* Enables horizontal swiping */
+                white-space: nowrap; /* Stops words like "PCB Work" from breaking in half */
+                padding-bottom: 0.5rem;
+                justify-content: flex-start;
+                gap: 1.2rem;
+            }
+
+            /* This hides the ugly scrollbar on mobile but keeps the swipe functionality */
+            nav ul::-webkit-scrollbar {
+                display: none;
             }
         }
     </style>
