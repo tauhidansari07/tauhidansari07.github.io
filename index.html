@@ -1,493 +1,353 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-   
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tauhid — Hardware Engineer & PCB Designer</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  :root{
+    --substrate:#0b1410;
+    --substrate-raised:#101d17;
+    --silkscreen:#e8efe9;
+    --muted:#8aa392;
+    --copper:#c87a3a;
+    --copper-bright:#e89a52;
+    --trace-green:#2f6b4f;
+    --solder-mask:#1c1f1e;
+    --pad:#d8c08a;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  *{margin:0;box-sizing:border-box;}
+  html, body{ overflow-x:hidden; max-width:100%; }
+
+  body{
+    background:var(--substrate);
+    color:var(--silkscreen);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+
+  body{
+    background-image:
+      linear-gradient(rgba(47,107,79,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(47,107,79,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  nav{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 22px 24px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(138,163,146,0.15);
+  }
+
+  .logo{
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--copper-bright);
+    letter-spacing: 0.04em;
+  }
+
+  .nav-links{
+    display:flex;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  .nav-links a{
+    color: var(--muted);
+    text-decoration:none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-links a:hover{ color: var(--silkscreen); }
+  .nav-links a.active{
+    color: var(--copper-bright);
+    border-bottom-color: var(--copper-bright);
+  }
+
+  /* HERO */
+  .hero{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 24px 60px;
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--copper-bright);
+    text-transform: uppercase;
+  }
+
+  .hero h1{
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-top: 14px;
+    max-width: 740px;
+  }
+
+  .hero h1 span{ color: var(--trace-green); }
+
+  .hero p{
+    color: var(--muted);
+    font-size: 16px;
+    margin-top: 18px;
+    max-width: 560px;
+  }
+
+  .hero-ctas{
+    margin-top: 30px;
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .btn{
+    font-family: var(--mono);
+    font-size: 13px;
+    text-decoration: none;
+    padding: 11px 20px;
+    border-radius: 3px;
+    display:inline-block;
+  }
+
+  .btn-primary{
+    background: var(--copper-bright);
+    color: #0b1410;
+    font-weight: 600;
+  }
+  .btn-primary:hover{ background: #f3ad6b; }
+
+  .btn-secondary{
+    border: 1px solid rgba(138,163,146,0.3);
+    color: var(--silkscreen);
+  }
+  .btn-secondary:hover{ border-color: var(--copper-bright); color: var(--copper-bright); }
+
+  /* STATS STRIP */
+  .stats{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(140px, 100%), 1fr));
+    gap: 18px;
+  }
+
+  .stat{
+    border: 1px solid rgba(138,163,146,0.15);
+    background: var(--substrate-raised);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+
+  .stat .num{
+    font-family: var(--mono);
+    font-size: 26px;
+    color: var(--copper-bright);
+    font-weight: 700;
+  }
+
+  .stat .label{
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* SECTION */
+  main section{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 64px;
+  }
+
+  section h2{
+    font-size: 13px;
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+
+  section h2::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background: rgba(138,163,146,0.15);
+  }
+
+  /* FEATURED PROJECT CARDS (simplified, link out to full project page) */
+  .feature-grid{
+    margin-top: 22px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: 22px;
+  }
+
+  .feature-card{
+    background: var(--substrate-raised);
+    border: 1px solid rgba(138,163,146,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display:block;
+    transition: border-color 0.15s ease;
+  }
+  .feature-card:hover{ border-color: rgba(232,154,82,0.4); }
+
+  .feature-thumb{
+    aspect-ratio: 4/3;
+    background: var(--solder-mask);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--muted);
+    font-family: var(--mono);
+    
+  }
+
+  .feature-body{ padding: 16px 18px; }
+
+  .feature-body h3{ font-size: 15px; }
+
+  .feature-body p{
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 6px;
+  }
+
+  .feature-body .arrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--copper-bright);
+    margin-top: 10px;
+    display:block;
+  }
+
+  
+
+    model-viewer{
+    width:100%;
+    height:100%;
+    --poster-color: transparent;
+  }
+
+  footer{
+    text-align:center;
+    padding: 24px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    border-top: 1px solid rgba(138,163,146,0.15);
+  }
+
+  @media (max-width: 480px){
+    nav{ padding: 18px 18px; }
+    .hero{ padding: 56px 18px 40px; }
+    .stats{ padding: 0 18px 48px; }
+    main section{ padding: 0 18px 48px; }
+  }
+</style>
 </head>
 <body>
 
-    <nav>
-        <h1>Tauhid Ansari</h1>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#projects">PCB Work</a></li>
-            <li><a href="#mechanical">3D Design</a></li> <!-- The new link -->
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+<nav>
+  <div class="logo">//tauhid</div>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
 
-    <header id="about">
-        <img src="https://i.ibb.co/NKFHQnp/IMG-20240426-002033-322.jpg" alt="Tauhid Ansari" class="profile-img">
-        <h3>Tauhid Ansari</h3>
-        <h2>Hello, I'm an Engineering Professional</h2>
-        <p>I specialize in complex systems, component-level troubleshooting, and technical project management.</p>
-        
-    </header>
+<div class="hero">
+  <div class="eyebrow">Hardware Engineer · PCB Designer</div>
+  <h1>I design circuit boards that <span>actually ship</span>.</h1>
+  <p>From schematic to layout to bring-up — I build USB hardware, power electronics, and the boards that sit quietly inside other people's products. Based on KiCad, backed by a habit of taking projects all the way to working silicon... well, copper.</p>
+  <div class="hero-ctas">
+    <a href="projects.html" class="btn btn-primary">View Projects</a>
+    <a href="about.html" class="btn btn-secondary">About Me</a>
+  </div>
+</div>
 
-    <div class="container" id="skills">
-        <h2>My Skills</h2>
-        <ul class="skill-list">
-            <li>PCB Designing (KiCad)</li>
-            <li>Component-Level Diagnostics</li>
-            <li>Hardware Reverse Engineering</li>
-            <li>Android OS Customization</li>
-        </ul>
-    </div>
+<div class="stats">
+  <div class="stat">
+    <div class="num">12+</div>
+    <div class="label">Boards designed</div>
+  </div>
+  <div class="stat">
+    <div class="num">2</div>
+    <div class="label">Layer stack-ups used</div>
+  </div>
+  <div class="stat">
+    <div class="num">USB-PD</div>
+    <div class="label">Current focus area</div>
+  </div>
+  <div class="stat">
+    <div class="num">KiCad</div>
+    <div class="label">Primary EDA tool</div>
+  </div>
+</div>
 
-    <div class="container" id="projects">
-        <h2>Featured Work (PCB Design) </h2>
-        <div class="grid">
-
-
-<div class="card">
-        <div class="card-viewer">
-            <img src="USB-HUB-RND.png" class="project-hero-img" id="projectHero7" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="USB-HUB-RND.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero7', this)">
-                
-                <img src="USB-HUB-SCH.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero7', this)">
-            </div>
+<main>
+  <section>
+    <h2>Featured Work</h2>
+    <div class="feature-grid">
+      <a class="feature-card" href="projects.html#usb-hub">
+        <div class="feature-thumb">
+<model-viewer
+          src="assets/models/USB_C_3D.glb"
+          camera-controls
+          auto-rotate
+          auto-rotate-delay="1500"
+          shadow-intensity="1"
+          exposure="1"
+          camera-orbit="25deg 75deg 105%"
+          alt="3D render of USB-C PD Hub PCB"
+          loading="eager">
+        </model-viewer></div>
+        <div class="feature-body">
+          <h3>USB-C PD Hub</h3>
+          <p>4-port hub with OTG host mode and 18W PD charging.</p>
+          <span class="arrow">View project →</span>
         </div>
-
-        <h3>18W Hybrid Type-C Hub (PD Pass-Through + OTG)</h3>
-        <p>A budget-friendly, open-source hardware design for a custom USB Type-C hub that supports simultaneous 18W Power Delivery (PD) charging and USB 2.0 Host (OTG) mode.<p>
-        <a href="https://github.com/tauhidansari07/Android-PD-OTG-Hub" class="project-link" target="_blank"> View Documentation </a>
-    </div>
-            
-
-            
-<div class="card">
-        <div class="card-viewer">
-            <img src="PD-TRIGGER-RND.png" class="project-hero-img" id="projectHero6" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="PD-TRIGGER-RND.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero6', this)">
-                
-                <img src="PD-TRIGGER-SCH.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero6', this)">
-            </div>
+      </a>
+      <a class="feature-card" href="projects.html#project-2">
+        <div class="feature-thumb">[ 3D PREVIEW ]</div>
+        <div class="feature-body">
+          <h3>Project Two</h3>
+          <p>Short description of what this board does.</p>
+          <span class="arrow">View project →</span>
         </div>
-
-        <h3>Smart USB-C Power Delivery (PD) Trigger Board</h3>
-        <p>A compact, low-cost USB-C Power Delivery decoy and utility bench tool. This project allows you to cycle through standard USB-PD profiles (5V, 9V, 12V, 15V, and 20V) at the push of a single button using a standard USB-C wall adapter or power bank.<p>
-        <a href="https://github.com/tauhidansari07/Smart-usb-c-pd-trigger" class="project-link" target="_blank"> View Documentation </a>
-    </div>
-
-            
-
- <div class="card">
-        <div class="card-viewer">
-            <img src="CL-D-RND.png" class="project-hero-img" id="projectHero5" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="CL-D-RND.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero5', this)">
-                
-                <img src="CL-D-SCH.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero5', this)">
-            </div>
+      </a>
+      <a class="feature-card" href="projects.html#project-3">
+        <div class="feature-thumb">[ 3D PREVIEW ]</div>
+        <div class="feature-body">
+          <h3>Project Three</h3>
+          <p>Short description of what this board does.</p>
+          <span class="arrow">View project →</span>
         </div>
-
-        <h3>Class D Audio Amplifier</h3>
-        <p>A high-fidelity, 600W Class-D audio amplifier PCB built around the TPA3255, featuring dual-stage power regulation and an auto-booting QCC5125 Bluetooth differential frontend.<p>
-        <a href="https://github.com/tauhidansari07/Class-D-Audio-Amp" class="project-link" target="_blank"> View Documentation </a>
+      </a>
     </div>
-            
+  </section>
+</main>
 
-            
-
-        <div class="card">
-        <div class="card-viewer">
-            <img src="BC-REN.png" class="project-hero-img" id="projectHero4" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="BC-REN.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero4', this)">
-                
-                <img src="BC-SCH.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero4', this)">
-            </div>
-        </div>
-
-        <h3>DC To DC Buck Step Down converter</h3>
-        <p>Buck conver with range from Input Voltage Range: 3.8V to 40V and Output Voltage Range: 0.8V to ~19V<p>
-        <a href="https://github.com/tauhidansari07/DC-to-DC-buck-converter" class="project-link" target="_blank"> View Documentation </a>
-    </div>
-
-
-
-            <div class="card">
-        <div class="card-viewer">
-            <img src="pcb-render.png" class="project-hero-img" id="projectHero1" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="pcb-render.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero1', this)">
-                
-                <img src="pcb-schematic.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero1', this)">
-            </div>
-        </div>
-
-        <h3>Audio Interface PCB</h3>
-        <p>Custom printed circuit board designed for devices that doesn't have Audio Jack, It uses Low Letency BT module with addition of chaging module for LiPo Battery.</p>
-        <a href="#" class="project-link">View Documentation</a>
-    </div>
-            
-           
-
-      <div class="card">
-        <div class="card-viewer">
-            <img src="BT_QC_RND.png" class="project-hero-img" id="projectHero2" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="BT_QC_RND.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero2', this)">
-                
-                <img src="BT_QC_SCH.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero2', this)">
-            </div>
-        </div>
-
-        <h3>Audio Interface PCB V2</h3>
-        <p>Custom printed circuit board designed for devices that doesn't have Audio Jack, It uses Low Letency BT module with addition of chaging module for LiPo Battery this time with qualcomm chip for BT 5.0.</p>
-        <a href="https://github.com/tauhidansari07/Audio-Interface-PCB" class="project-link">View Documentation</a>
-    </div>
-
-    
- <div class="card">
-        <div class="card-viewer">
-            <img src="RND-PD.png" class="project-hero-img" id="projectHero3" alt="PCB 3D Render">
-            
-            <div class="card-thumbnails">
-                <img src="RND-PD.png" class="thumb active" alt="PCB 3D Render Thumbnail" onclick="changeHero('projectHero3', this)">
-                
-                <img src="SCH-PD.png" class="thumb" alt="PCB Schematic Thumbnail" onclick="changeHero('projectHero3', this)">
-            </div>
-        </div>
-
-        <h3>22.5W PD Powerbank Module Board</h3>
-        <p>Created a PCB with SW6208 IC which has great power effiecency.</p>
-        <a href="#" class="project-link">View Documentation</a>
-    </div>
-
-
-    </div>
-    </div>
-
-       <!-- New Section: Mechanical & 3D Design -->
-    <div class="container" id="mechanical">
-        <h2>3D Modeling</h2>
-        <div class="grid">
-            
-            <div class="card">
-                
-                <!-- Your new Fusion 360 image -->
-                <img src="fusion-render.png" alt="Fusion 360 3D Model" class="project-img">
-                
-                <h3>Custom Powerbank Enclosures</h3>
-                <p>Engineered precise mechanical components and enclosures using Autodesk Fusion 360. Designed with exact tolerances for 3D printing and seamless integration with custom PCB layouts.</p>
-                <a href="https://a360.co/4n2hbAc" class="project-link" target="_blank">View Design Files</a>
-            </div>
-
-            
-
-
-        </div>
-    </div>
-
-
-    <footer id="contact">
-        <h2>Get In Touch</h2>
-        <p>Ready to collaborate on the next big project.</p>
-        <p>Email: tosiftauhid465@gmail.com</p>
-    </footer>
-
-    <style>
-        /* Base Styles & Dark Theme */
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
-            line-height: 1.6;
-        }
-
-        /* Flexbox Navigation */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            /* 0.9 means 90% solid, letting a tiny bit of background peek through */
-            background-color: rgba(30, 30, 30, 0.8); 
-            backdrop-filter: blur(8px); /* The frosted glass blur */
-            padding: 0.5rem 2rem; /* Shrunk top/bottom padding from 1rem to 0.5rem */
-            position: sticky;
-            top: 0;
-            z-index: 100; /* Ensures the nav stays on top of your project cards */
-            border-bottom: 1px solid rgba(255,255,255,0.1); /* Very faint bottom line */
-        }
-
-        nav h1 {
-            margin: 0;
-            color: #00d2ff; /* Cyan accent */
-            font-size: 1.4rem;
-            
-        }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 1.5rem;
-            margin: 0;
-            padding: 0;
-            margin-top: auto;
-            margin-bottom: auto;
-            
-        }
-
-        nav a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        nav a:hover {
-            color: #00d2ff;
-        }
-
-        /* Hero Section - Flexbox Centering */
-        header {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 5rem 2rem;
-            background: linear-gradient(135deg, #121212 0%, #1a2a3a 100%);
-        }
-
-        header h2 {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            max-width: 600px;
-            color: #b0b0b0;
-            
-        }
-
-        /* Projects Section - CSS Grid for Automatic Responsiveness */
-        .container {
-            padding: 3rem 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .container h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #00d2ff;
-        }
-
-        .grid {
-            display: grid;
-            /* This is the magic responsive line! */
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .card {
-            background-color: #1e1e1e;
-            padding: 1.5rem;
-            border-radius: 8px;
-            border-top: 4px solid #00d2ff;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
-        .card h3 {
-            margin-top: 0;
-        }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%; /* This makes the image a perfect circle */
-            object-fit: cover; /* This stops rectangular images from stretching/squishing */
-            border: 3px solid #00d2ff; /* Matches your theme color */
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 210, 255, 0.2); /* Soft glow effect */
-        }
-
-        /* Skills Section Styling */
-        .skill-list {
-            list-style: none; /* Removes the standard bullet points */
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap; /* Automatically drops to the next line on small screens */
-            gap: 1rem; /* Space between each badge */
-            justify-content: flex-start; /* Centers the whole cluster */
-            margin-top: 1.5rem;
-        }
-
-        .skill-list li {
-            background-color: #1e1e1e;
-            color: #e0e0e0;
-            padding: 0.5rem 1.2rem;
-            border-radius: 25px; /* Creates the rounded "pill" shape */
-            border: 1px solid #00d2ff; /* Matches your cyan theme */
-            font-size: 0.95rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease; /* Prepares it for a hover effect */
-        }
-
-        /* Optional: Makes the badge pop up slightly when hovered */
-        .skill-list li:hover {
-            transform: translateY(-3px);
-            background-color: #00d2ff;
-            color: #121212;
-            font-weight: bold;
-        }
-
-        /* THE NEW IMAGE VIEWER CSS */
-        
-        .card-viewer {
-            position: relative;
-            margin-bottom: 1rem;
-            width: 100%;
-            height: 250px; /* Standard height for project images */
-            overflow: hidden;
-            border-radius: 4px;
-            border-bottom: 2px solid #00d2ff; /* Theme accent line */
-        }
-
-        
-       /* Updated style for single project images */
-        .project-img {
-            width: 100%; 
-            height: auto; /* Lets the image naturally dictate its own height */
-            max-height: 400px; /* Prevents it from getting too massive on large desktop screens */
-            object-fit: contain; /* Ensures 100% of the image is visible without any cropping */
-            background-color: rgba(30, 30, 30, 0.5); /* Subtle dark backdrop just in case there's extra space */
-            border-radius: 4px;
-            margin-bottom: 1rem;
-            border-bottom: 2px solid #00d2ff;
-        }
-
-/* Styling for the project link button */
-        .project-link {
-            color: #00d2ff; /* This kills the default blue and makes it your cyan theme */
-            text-decoration: none; /* This kills the default underline */
-            display: inline-block;
-            margin-top: 1rem;
-            font-weight: bold;
-            font-size: 0.9rem;
-            border: 1px solid #00d2ff; /* Gives it a nice button outline */
-            padding: 0.4rem 0.8rem;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        /* Makes the button light up when you hover over it */
-        .project-link:hover {
-            background-color: #00d2ff;
-            color: #121212;
-        }
-
-        .project-hero-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain; /* Prevents the schematic from stretching awkwardly */
-            background-color: rgba(30, 30, 30, 0.5); /* Slight dark backdrop for clarity */
-            transition: opacity 0.2s ease;
-        }
-
-        /* Thumbnails Container - Floating on the main image */
-        .card-thumbnails {
-            display: flex;
-            gap: 0.5rem;
-            position: absolute;
-            bottom: 0.5rem;
-            left: 0.5rem;
-            padding: 0.3rem;
-            background-color: rgba(30, 30, 30, 0.8); /* Dark frosted background */
-            backdrop-filter: blur(5px);
-            border-radius: 6px;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Individual Thumbnails */
-        .thumb {
-            width: 45px;
-            height: 45px;
-            object-fit: cover; /* Centers the image content */
-            border-radius: 4px;
-            border: 2px solid transparent;
-            cursor: pointer;
-            transition: all 0.1s ease;
-        }
-
-        .thumb:hover {
-            transform: scale(1.05); /* Slight scale up on hover */
-        }
-
-        /* The thumbnail currently showing in the hero slot */
-        .thumb.active {
-            border-color: #00d2ff; /* Lights up with the theme color */
-        }
-        
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 2rem;
-            background-color: #1e1e1e;
-            margin-top: 2rem;
-        }
-
-        
-       /* Mobile Layout Adjustments */
-        @media (max-width: 500px) {
-            nav {
-                flex-direction: column;
-                gap: 0.8rem;
-                align-items: flex-start;
-            }
-            
-            nav ul {
-                width: 100%;
-                overflow-x: auto; /* Enables horizontal swiping */
-                white-space: nowrap; /* Stops words like "PCB Work" from breaking in half */
-                padding-bottom: 0.5rem;
-                justify-content: flex-start;
-                gap: 1.2rem;
-            }
-
-            /* This hides the ugly scrollbar on mobile but keeps the swipe functionality */
-            nav ul::-webkit-scrollbar {
-                display: none;
-            }
-        }
-    </style>
-
-    <script>
-        function changeHero(heroId, clickedElement) {
-            // 1. Get the large hero image element by its unique ID
-            const heroImage = document.getElementById(heroId);
-            
-            // 2. Change the source of the hero image to match the clicked thumbnail
-            heroImage.src = clickedElement.src;
-
-            // 3. Remove the 'active' class from all thumbnails in this container
-            const allThumbs = clickedElement.parentElement.getElementsByClassName('thumb');
-            for (let i = 0; i < allThumbs.length; i++) {
-                allThumbs[i].classList.remove('active');
-            }
-
-            // 4. Add the 'active' class to the thumbnail that was just clicked
-            clickedElement.classList.add('active');
-        }
-    </script>
-</body>
-</html>
+<footer>built by Tony</footer>
 
 </body>
 </html>

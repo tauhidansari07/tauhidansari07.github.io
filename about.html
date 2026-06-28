@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Tauhid's Board Lab</title>
+<style>
+  :root{
+    --substrate:#0b1410;
+    --substrate-raised:#101d17;
+    --silkscreen:#e8efe9;
+    --muted:#8aa392;
+    --copper:#c87a3a;
+    --copper-bright:#e89a52;
+    --trace-green:#2f6b4f;
+    --solder-mask:#1c1f1e;
+    --pad:#d8c08a;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  *{margin:0;box-sizing:border-box;}
+
+  html, body{ overflow-x:hidden; max-width:100%; }
+
+  body{
+    background:var(--substrate);
+    color:var(--silkscreen);
+    font-family:var(--sans);
+    line-height:1.6;
+  }
+
+  body{
+    background-image:
+      linear-gradient(rgba(47,107,79,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(47,107,79,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* NAV */
+  nav{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 22px 24px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(138,163,146,0.15);
+  }
+
+  .logo{
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--copper-bright);
+    letter-spacing: 0.04em;
+  }
+
+  .nav-links{
+    display:flex;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  .nav-links a{
+    color: var(--muted);
+    text-decoration:none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav-links a:hover{ color: var(--silkscreen); }
+  .nav-links a.active{
+    color: var(--copper-bright);
+    border-bottom-color: var(--copper-bright);
+  }
+
+  main{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--copper-bright);
+    text-transform: uppercase;
+  }
+
+  /* PROFILE HERO */
+  .profile-hero{
+    display:flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+
+  .avatar-wrap{
+    flex: 0 0 auto;
+    position: relative;
+  }
+
+  .avatar-wrap img{
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid rgba(138,163,146,0.25);
+    display:block;
+  }
+
+  /* corner pad accents like a component on a board */
+  .avatar-wrap::before, .avatar-wrap::after{
+    content:'';
+    position:absolute;
+    width:7px;height:7px;
+    border-radius:50%;
+    background: var(--pad);
+    opacity:0.55;
+  }
+  .avatar-wrap::before{ top:-4px; left:-4px; }
+  .avatar-wrap::after{ bottom:-4px; right:-4px; }
+
+  .profile-text{
+    flex: 1 1 360px;
+    min-width: 0;
+  }
+
+  h1{
+    font-size: clamp(26px, 4.5vw, 38px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .role-line{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--trace-green);
+    margin-top: 8px;
+  }
+
+  .bio{
+    color: var(--muted);
+    margin-top: 18px;
+    font-size: 15px;
+    max-width: 600px;
+  }
+
+  .bio p + p{ margin-top: 12px; }
+
+  /* SECTION HEADERS */
+  section{ margin-top: 56px; }
+
+  section h2{
+    font-size: 13px;
+    font-family: var(--mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+
+  section h2::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background: rgba(138,163,146,0.15);
+  }
+
+  /* SKILLS */
+  .skills-grid{
+    margin-top: 22px;
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    gap: 18px;
+  }
+
+  .skill-card{
+    background: var(--substrate-raised);
+    border: 1px solid rgba(138,163,146,0.15);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+
+  .skill-card h3{
+    font-size: 14px;
+    color: var(--copper-bright);
+    margin-bottom: 10px;
+  }
+
+  .tag-row{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 6px 8px;
+  }
+
+  .tag-row span{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    background: rgba(47,107,79,0.15);
+    border: 1px solid rgba(47,107,79,0.35);
+    color: var(--silkscreen);
+    padding: 4px 9px;
+    border-radius: 2px;
+  }
+
+  /* TOOLING STRIP */
+  .tools-strip{
+    margin-top: 22px;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tools-strip span{
+    font-family: var(--mono);
+    font-size: 12px;
+    background: rgba(200,122,58,0.1);
+    border: 1px solid rgba(200,122,58,0.25);
+    color: var(--copper-bright);
+    padding: 6px 12px;
+    border-radius: 2px;
+  }
+
+  /* CONTACT STRIP */
+  .contact-row{
+    margin-top: 22px;
+    display:flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .contact-row a{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--silkscreen);
+    text-decoration:none;
+    border-bottom: 1px solid var(--trace-green);
+    padding-bottom: 2px;
+  }
+  .contact-row a:hover{ color: var(--copper-bright); border-color: var(--copper-bright); }
+
+  footer{
+    text-align:center;
+    padding: 24px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    border-top: 1px solid rgba(138,163,146,0.15);
+  }
+
+  @media (max-width: 480px){
+    nav{ padding: 18px 18px; }
+    main{ padding: 36px 18px 60px; }
+    .profile-hero{ gap: 24px; }
+    .avatar-wrap img{ width: 140px; height: 140px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">//tauhid</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html" class="active">About</a>
+    <a href="projects.html">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<main>
+  <div class="eyebrow">About</div>
+
+  <div class="profile-hero">
+    <div class="avatar-wrap">
+      <!-- replace with your actual photo path -->
+      <img src="assets/img/profile_pic.jpg" alt="Tauhid's profile photo">
+    </div>
+    <div class="profile-text">
+      <h1>Tauhid Ansari</h1>
+      <div class="role-line">Hardware Engineer · PCB Designer</div>
+      <div class="bio">
+        <p>I design and build printed circuit boards — from schematic capture to layout to bring-up — with a focus on USB, power delivery, and small-form-factor consumer hardware.</p>
+        <p>Most of my work lives in KiCad, where I take projects from concept through routing, 3D verification, and into manufacturable Gerbers. Outside of paid work, I build things for myself: USB hubs, power tools, and whatever idea won't leave me alone until it's etched in copper.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <h2>Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h3>PCB Design</h3>
+        <div class="tag-row">
+          <span>Schematic Capture</span>
+          <span>Layout & Routing</span>
+          <span>Signal Integrity</span>
+          <span>Power Design</span>
+          <span>Reverse Engineering</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Hardware</h3>
+        <div class="tag-row">
+          <span>USB 2.0 / USB-C</span>
+          <span>USB-PD</span>
+          <span>OTG</span>
+          <span>SMD Soldering</span>
+          <span>Bring-up & Debug</span>
+        </div>
+      </div>
+      <div class="skill-card">
+        <h3>Tools & Software</h3>
+        <div class="tag-row">
+          <span>KiCad</span>
+          <span>Fusion 360</span>
+          
+          <span>Git</span>
+          <span>GitHub Pages</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Currently exploring</h2>
+    <div class="tools-strip">
+      <span>USB-PD negotiation ICs</span>
+      <span>3D model pipelines for web</span>
+      <span>4-layer stack-up design</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Get in touch</h2>
+    <div class="contact-row">
+      <a href="mailto:tosiftauhid465@gmail.com">tosiftauhid465@gmail.com</a>
+      <a href="https://github.com/yourusername" target="_blank">GitHub →</a>
+      <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn →</a>
+    </div>
+  </section>
+</main>
+
+<footer>built by Tony</footer>
+
+</body>
+</html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Tauhid's Board Lab</title>
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  :root{
+    --substrate:#0b1410;
+    --substrate-raised:#101d17;
+    --silkscreen:#e8efe9;
+    --muted:#8aa392;
+    --copper:#c87a3a;
+    --copper-bright:#e89a52;
+    --trace-green:#2f6b4f;
+    --solder-mask:#1c1f1e;
+    --pad:#d8c08a;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  *{margin:0;box-sizing:border-box;}
+  html, body{ overflow-x:hidden; max-width:100%; }
+
+  body{
+    background:var(--substrate);
+    color:var(--silkscreen);
+    font-family:var(--sans);
+    line-height:1.5;
+  }
+
+  body{
+    background-image:
+      linear-gradient(rgba(47,107,79,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(47,107,79,0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  nav{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 22px 24px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(138,163,146,0.15);
+  }
+
+  .logo{
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--copper-bright);
+    letter-spacing: 0.04em;
+  }
+
+  .nav-links{
+    display:flex;
+    gap: 24px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+
+  .nav-links a{
+    color: var(--muted);
+    text-decoration:none;
+    padding-bottom: 4px;
+    border-bottom: 1px solid transparent;
+  }
+  .nav-links a:hover{ color: var(--silkscreen); }
+  .nav-links a.active{
+    color: var(--copper-bright);
+    border-bottom-color: var(--copper-bright);
+  }
+
+  header.page-head{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 8px;
+  }
+
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--copper-bright);
+    text-transform: uppercase;
+  }
+
+  header.page-head h1{
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    margin-top: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  header.page-head p.sub{
+    color: var(--muted);
+    margin-top: 10px;
+    max-width: 560px;
+    font-size: 15px;
+  }
+
+  main{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 28px;
+  }
+
+  .card{
+    background: var(--substrate-raised);
+    border: 1px solid rgba(138,163,146,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    min-width: 0;
+    scroll-margin-top: 100px;
+  }
+
+  .card::before, .card::after{
+    content:'';
+    position:absolute;
+    width:8px;height:8px;
+    border-radius:50%;
+    background: var(--pad);
+    opacity:0.5;
+    z-index:2;
+  }
+  .card::before{ top:10px; left:10px; }
+  .card::after{ top:10px; right:10px; }
+
+  .viewer-wrap{
+    position:relative;
+    background: var(--solder-mask);
+    aspect-ratio: 4/3;
+  }
+
+  model-viewer{
+    width:100%;
+    height:100%;
+    --poster-color: transparent;
+  }
+
+  .view-toggle{
+    position:absolute;
+    bottom:10px;
+    right:10px;
+    display:flex;
+    gap:4px;
+    z-index:3;
+  }
+
+  .view-toggle button{
+    font-family: var(--mono);
+    font-size:11px;
+    letter-spacing:0.04em;
+    background: rgba(11,20,16,0.8);
+    color: var(--muted);
+    border: 1px solid rgba(138,163,146,0.25);
+    padding: 5px 10px;
+    cursor:pointer;
+    border-radius:2px;
+  }
+  .view-toggle button.active{
+    color: var(--copper-bright);
+    border-color: var(--copper-bright);
+  }
+
+  .photo-strip{
+    display:none;
+    width:100%;
+    height:100%;
+    overflow-x:auto;
+    scroll-snap-type: x mandatory;
+  }
+  .photo-strip.active{ display:flex; }
+  .viewer-wrap.show-3d model-viewer{ display:block; }
+  .viewer-wrap.show-photos model-viewer{ display:none; }
+
+  .photo-strip img{
+    flex: 0 0 100%;
+    width:100%;
+    height:100%;
+    object-fit: cover;
+    scroll-snap-align: start;
+  }
+
+  .card-body{ padding: 18px 20px 20px; }
+
+  .card-body h2{ font-size: 17px; font-weight: 600; }
+
+  .card-body p.desc{
+    color: var(--muted);
+    font-size: 13.5px;
+    margin-top: 6px;
+  }
+
+  .specs{
+    margin-top: 14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap: 6px 10px;
+    font-family: var(--mono);
+    font-size: 11.5px;
+  }
+
+  .specs span{
+    background: rgba(200,122,58,0.1);
+    border: 1px solid rgba(200,122,58,0.25);
+    color: var(--copper-bright);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .card-links{
+    margin-top: 16px;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+  }
+
+  .card-links a{
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--silkscreen);
+    text-decoration:none;
+    border-bottom: 1px solid var(--trace-green);
+    padding-bottom: 2px;
+  }
+  .card-links a:hover{ color: var(--copper-bright); border-color: var(--copper-bright); }
+
+  footer{
+    text-align:center;
+    padding: 24px;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    border-top: 1px solid rgba(138,163,146,0.15);
+  }
+
+  @media (max-width: 480px){
+    header.page-head{ padding: 36px 18px 4px; }
+    main{ padding: 24px 18px 60px; }
+    .grid{ gap: 20px; }
+    .view-toggle button{ padding: 5px 8px; font-size: 10px; }
+    .specs{ font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">// tauhid.dev</div>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="projects.html" class="active">Projects</a>
+    <a href="contact.html">Contact</a>
+  </div>
+</nav>
+
+<header class="page-head">
+  <div class="eyebrow">Hardware / PCB Design</div>
+  <h1>Projects</h1>
+  <p class="sub">Custom PCB projects — rotate any board in 3D, or flip to real photos. Built to work the same on desktop and phone.</p>
+</header>
+
+<main>
+  <div class="grid">
+
+    <div class="card" id="usb-hub">
+      <div class="viewer-wrap show-3d">
+        <model-viewer
+          src="assets/models/USB_C_3D.glb"
+          camera-controls
+          auto-rotate
+          auto-rotate-delay="1500"
+          shadow-intensity="1"
+          exposure="1"
+          camera-orbit="25deg 75deg 105%"
+          alt="3D render of USB-C PD Hub PCB"
+          loading="eager">
+        </model-viewer>
+        <div class="photo-strip">
+          <img src="assets/img/Rnd_Front_Hub.png" alt="Board top view">
+          <img src="assets/img/Rnd_Back_Hub.png" alt="Board angled view">
+          <img src="assets/img/Rnd_Angle_Hub.png" alt="Board bottom view">
+        </div>
+        <div class="view-toggle">
+          <button class="active" data-mode="3d">3D</button>
+          <button data-mode="photos">Photos</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <h2>USB-C PD Hub (FE1.1s)</h2>
+        <p class="desc">4-port USB 2.0 hub with simultaneous OTG host mode and 18W PD charging for Android devices.</p>
+        <div class="specs">
+          <span>FE1.1s</span>
+          <span>LDR6023SS</span>
+          <span>2-layer</span>
+          <span>USB-C PD 18W</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/tauhidansari07/Android-PD-OTG-Hub" target="_blank">GitHub repo →</a>
+          <a href="https://github.com/tauhidansari07/Android-PD-OTG-Hub/blob/main/USB-HUB-SCH%20PD.pdf" target="_blank">Schematic (PDF)</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="project-2">
+      <div class="viewer-wrap show-3d">
+        <model-viewer
+          src="assets/models/project-2.glb"
+          camera-controls
+          auto-rotate
+          camera-orbit="25deg 75deg 105%"
+          alt="3D render of PCB">
+        </model-viewer>
+        <div class="photo-strip">
+          <img src="assets/img/project-2-a.jpg" alt="Board view A">
+          <img src="assets/img/project-2-b.jpg" alt="Board view B">
+        </div>
+        <div class="view-toggle">
+          <button class="active" data-mode="3d">3D</button>
+          <button data-mode="photos">Photos</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <h2>Project Two</h2>
+        <p class="desc">One or two lines on what it does and why it's interesting.</p>
+        <div class="specs">
+          <span>MCU</span>
+          <span>4-layer</span>
+          <span>SMD</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="project-3">
+      <div class="viewer-wrap show-3d">
+        <model-viewer
+          src="assets/models/project-3.glb"
+          camera-controls
+          auto-rotate
+          camera-orbit="25deg 75deg 105%"
+          alt="3D render of PCB">
+        </model-viewer>
+        <div class="photo-strip">
+          <img src="assets/img/project-3-a.jpg" alt="Board view A">
+          <img src="assets/img/project-3-b.jpg" alt="Board view B">
+        </div>
+        <div class="view-toggle">
+          <button class="active" data-mode="3d">3D</button>
+          <button data-mode="photos">Photos</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <h2>Project Three</h2>
+        <p class="desc">One or two lines on what it does and why it's interesting.</p>
+        <div class="specs">
+          <span>MCU</span>
+          <span>2-layer</span>
+          <span>SMD</span>
+        </div>
+        <div class="card-links">
+          <a href="#" target="_blank">GitHub repo →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>built by Tony</footer>
+
+<script>
+  document.querySelectorAll('.view-toggle').forEach(toggle => {
+    toggle.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const wrap = toggle.closest('.viewer-wrap');
+        const mode = btn.dataset.mode;
+        toggle.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        wrap.classList.toggle('show-3d', mode === '3d');
+        wrap.classList.toggle('show-photos', mode === 'photos');
+        wrap.querySelector('.photo-strip').classList.toggle('active', mode === 'photos');
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
