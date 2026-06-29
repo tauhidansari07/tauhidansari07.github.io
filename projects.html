@@ -47,12 +47,16 @@
     border-bottom: 1px solid rgba(138,163,146,0.15);
   }
 
-  .logo{
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--copper-bright);
-    letter-spacing: 0.04em;
-  }
+ .logo{
+  display: flex;
+  align-items: center;
+}
+
+.logo img{
+  height: 45px;        /* adjust to taste */
+  width: auto;
+  display: block;
+}
 
   .nav-links{
     display:flex;
@@ -256,7 +260,9 @@
 <body>
 
 <nav>
-  <div class="logo">// tauhid.dev</div>
+  <a href="index.html" class="logo">
+  <img src="assets/img/logo.svg.svg" alt="Tauhid logo">
+</a>
   <div class="nav-links">
     <a href="index.html">Home</a>
     <a href="about.html">About</a>
