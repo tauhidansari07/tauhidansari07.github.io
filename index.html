@@ -355,10 +355,22 @@
         </div>
       </a>
       <a class="feature-card" href="projects.html#project-3">
-        <div class="feature-thumb">[ 3D PREVIEW ]</div>
+        <div class="feature-thumb">
+           <model-viewer
+          src="assets/models/class d amp.glb"
+          camera-controls
+          auto-rotate
+          auto-rotate-delay="1500"
+          shadow-intensity="1"
+          exposure="1"
+          camera-orbit="25deg 75deg 105%"
+          alt="3D render of USB-C PD Hub PCB"
+          loading="eager">
+        </model-viewer>
+        </div>
         <div class="feature-body">
-          <h3>Project Three</h3>
-          <p>Short description of what this board does.</p>
+          <h3>High-Power TPA3255 Class-D Bluetooth Amplifier</h3>
+          <p>A fully custom, high-fidelity audio amplifier PCB capable of delivering over 300W per channel into 4Ω loads. This project leverages the Texas Instruments TPA3255 in a Stereo Bridge-Tied Load (BTL) configuration, paired with a high-end Qualcomm Bluetooth frontend for pristine, noise-free wireless audio.</p>
           <span class="arrow">View project →</span>
         </div>
       </a>
